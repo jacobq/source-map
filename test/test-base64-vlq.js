@@ -521,18 +521,17 @@ exports["test encode"] = function(assert) {
   for (let i = 0; i < vlqs.length; i++) {
     const str = base64VLQ.encode(vlqs[i].number);
     assert.strictEqual(
-        vlqs[i].encoded,
-        str,
-        `number ${vlqs[i].number} should encode correctly: ${vlqs[i].encoded} === ${str}`
+      vlqs[i].encoded,
+      str,
+      `number ${vlqs[i].number} should encode correctly: ${vlqs[i].encoded} === ${str}`
     );
   }
 };
 
-
-exports['test normal encoding and decoding'] = function (assert) {
-  let result = {};
-  for (var i = -255; i < 256; i++) {
-    let str = base64VLQ.encode(i);
+exports["test normal encoding and decoding"] = function(assert) {
+  const result = {};
+  for (let i = -255; i < 256; i++) {
+    const str = base64VLQ.encode(i);
     base64VLQ.decode(str, 0, result);
     assert.strictEqual(result.value, i);
     assert.strictEqual(result.rest, str.length);

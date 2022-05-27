@@ -64,7 +64,8 @@
   },
   "license": "BSD-3-Clause",
   "scripts": {
-    "lint": "eslint --fix *.js lib/ test/",
+    "lint": "eslint *.js lib/ test/",
+    "lint:fix": "eslint --fix *.js lib/ test/",
     "prebuild": "npm run lint",
     "test": "node test/run-tests.js",
     "coverage": "nyc node test/run-tests.js",
