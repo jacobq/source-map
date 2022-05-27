@@ -68,6 +68,7 @@
     "prebuild": "npm run lint",
     "test": "node test/run-tests.js",
     "coverage": "nyc node test/run-tests.js",
+    "coverage:report": "nyc report --reporter=lcov",
     "setup": "mkdir -p coverage && cp -n .waiting.html coverage/index.html || true",
     "dev:live": "live-server --port=4103 --ignorePattern='(js|css|png)$' coverage",
     "dev:watch": "watch 'npm run coverage' lib/ test/",
@@ -84,7 +85,7 @@
     "eslint-plugin-prettier": "^3.1.1",
     "live-server": "^1.2.0",
     "npm-run-all": "^4.1.2",
-    "nyc": "^11.7.1",
+    "nyc": "^11.9.0",
     "prettier": "1.18.2",
     "watch": "^1.0.2"
   },

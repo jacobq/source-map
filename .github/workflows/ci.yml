@@ -26,10 +26,13 @@ jobs:
           cache: npm
       - name: Install Dependencies
         run: npm ci --legacy-peer-deps
-      - name: Run Tests & Coverage
-        run: |
-          npm run coverage
-          npm install -g coveralls
-          nyc report --reporter=text-lcov | coveralls
+      - name: Run Tests
+        run: npm run coverage
+      - name: Generate coverage output
+        run: npm run coverage:report
+      - name: Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Lint
         run: npm run lint
