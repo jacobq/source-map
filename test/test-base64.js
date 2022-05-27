@@ -6,6 +6,7 @@
  */
 
 const base64 = require("../lib/base64");
+const { Buffer } = require('buffer');
 
 exports["test out of range encoding"] = function(assert) {
   assert.throws(function() {
@@ -16,8 +17,24 @@ exports["test out of range encoding"] = function(assert) {
   }, /Must be between 0 and 63/);
 };
 
-exports["test normal encoding and decoding"] = function(assert) {
+exports["test single-value encoding"] = function(assert) {
   for (let i = 0; i < 64; i++) {
-    base64.encode(i);
+    let actual = base64.encode(i);
+    // i << 2 to align least significant bit in octet with LSb used for first digit
+    let expected = Buffer.from([i << 2]).toString('base64');
+    assert.strictEqual(actual.charCodeAt(0), expected.charCodeAt(0), `First character of base64.encode(${i}) ${actual} should match the output of the base64 encoding in NodeJS's Buffer ${expected}`);
+  }
+};
+
+exports['test out of range decoding'] = function (assert) {
+  assert.strictEqual(base64.decode('='.charCodeAt(0)), -1);
+};
+
+exports['test single-value decoding'] = function (assert) {
+  for (var i = 0; i < 64; i++) {
+    let encoded = Buffer.from([i << 2]).toString('base64');
+    let actual = base64.decode(encoded.charCodeAt(0));
+    let expected = i;
+    assert.strictEqual(actual, expected, `First character of base64.decode(${i}) ${actual} should match the output of the base64 encoding in NodeJS's Buffer ${expected}`);
   }
 };
