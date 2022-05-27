@@ -1,6 +1,57 @@
 # Change Log
 
-## 0.8.0-beta.0
+[Compare with current `mozilla/source-map`](https://github.com/mozilla/source-map/compare/master...jacobq:%40jacobq/source-map)
+
+## [v1.1.0](https://github.com/jacobq/source-map/releases/tag/v1.1.0)
+
+- Set `engines` (in `package.json`) to `10.* || 12.* || 14.* || 16.* || >= 18`
+  and test against those versions in CI since this should still work fine
+  in those environments even though we don't really want to commit
+  to supporting already end-of-life Node.js versions...
+  ([`5e5d795`](https://github.com/jacobq/source-map/commit/5e5d7954732ea660bc02cec20299d46c87f08981)) 
+
+## [v1.0.0](https://github.com/jacobq/source-map/releases/tag/v1.0.0)
+
+### Breaking changes :boom:
+
+- Name is now [`@jacobq/source-map`](https://www.npmjs.com/package/@jacobq/source-map)
+  Fork from [mozilla/source-map](https://github.com/mozilla/source-map)
+  ([`58819f0`](https://github.com/mozilla/source-map/commit/58819f09018d56ef84dc41ba9c93f554e0645169),
+  just a few commits ahead of v0.8.0-beta.0)
+- Revert ["Remove VLQ decoding code that is now handled in wasm"](https://github.com/mozilla/source-map/commit/e222ef64fbc2143a7cca5d3edb44a543acf86872)
+  ([`ab7351a`](https://github.com/jacobq/source-map/commit/ab7351a182873a00b938060a0d3359c839df88ea))
+- Revert ["Remove unused fromVLQSigned function (#402)"](https://github.com/mozilla/source-map/commit/0f3e95586cc2e52f36b83469ce1fd2c436f010c2)
+  ([`8021e70`](https://github.com/jacobq/source-map/commit/8021e709fdba308c985d4e51e448f77e2c4cda5c))
+- Mass upgrade dependencies ([`7ac3542`](https://github.com/jacobq/source-map/commit/7ac3542c2bdafc93d3b365861af7f091029fa021))
+  * This package relies on [`whatwg-url`](https://github.com/jsdom/whatwg-url) to parse non-standard URLs.
+    (See also: https://bugs.chromium.org/p/chromium/issues/detail?id=869291)
+    In this release the version of `whatwg-url` was upgraded from `^7.0.0` to `^11.0.0`.
+    This does not appear to cause breaking changes for `source-maps`.
+    Nevertheless, the breaking changes from that package are:
+    - [10.0.0](https://github.com/jsdom/whatwg-url/releases/tag/v10.0.0): API from `whatwg-url/webidl2js-wrapper` changed
+    - [9.0.0](https://github.com/jsdom/whatwg-url/releases/tag/v9.0.0): Minimum Node.js version is 12.0.0
+    - [8.0.0](https://github.com/jsdom/whatwg-url/releases/tag/v8.0.0): Minimum Node.js version is 10.0.0
+  * A number of `devDependencies` have been upgraded
+    (e.g. [`nyc` ^11.9.0  →  ^15.1.0](https://github.com/istanbuljs/nyc/blob/master/CHANGELOG.md)),
+    but our tests all still appear to be passing. :crossed_fingers:
+
+### Internal Improvements :sparkles:
+
+- Fix broken/meaningless base64 encode/decode tests
+  (use Node.jswith [`Buffer::toString('base64')`](https://nodejs.org/docs/latest-v18.x/api/buffer.html#buftostringencoding-start-end) for reference)
+  ([`ab7351a`](https://github.com/jacobq/source-map/commit/ab7351a182873a00b938060a0d3359c839df88ea))
+- Use GitHub Actions instead of TravisCI for testing ([`682a134`](https://github.com/jacobq/source-map/commit/682a1343b5061bf1020d5d9a747abe93bdbb948e))
+- Drop `--fix` flag from `npm run lint` script; use `npm run lint:fix` instead ([`b845978`](https://github.com/jacobq/source-map/commit/b8459786871799e398f4ce3a7916fb216c826012))
+- Commit lockfile (`package-lock.json`)
+  ([`91e0e93`](https://github.com/jacobq/source-map/commit/91e0e93993a7afd87873f2ecd0226c6281f1715b))
+
+***
+
+## `mozilla/source-map` changelog follows
+
+<details>
+<summary>Upstream changelog</summary>
+
 
 ### Breaking changes
 
@@ -376,3 +427,5 @@
 ## 0.1.10
 
 - Added sourcesContent support to the customer and generator.
+
+</details>
