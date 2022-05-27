@@ -1,12 +1,14 @@
 sourceMap.SourceMapConsumer.initialize({
-  "lib/mappings.wasm": "../lib/mappings.wasm?bust_cache=" + String(Math.random()).replace(/0\./, "")
+  "lib/mappings.wasm":
+    "../lib/mappings.wasm?bust_cache=" +
+    String(Math.random()).replace(/0\./, ""),
 });
 
 function bindRange(labelId, updater) {
   const label = document.getElementById(labelId);
   const input = label.querySelector("input");
 
-  input.addEventListener("input", e => {
+  input.addEventListener("input", (e) => {
     e.preventDefault();
     updater(input.value);
   });
@@ -14,12 +16,12 @@ function bindRange(labelId, updater) {
   updater(input.value);
 }
 
-bindRange("warm-up-iters", input => {
+bindRange("warm-up-iters", (input) => {
   const value = parseInt(input, 10);
   WARM_UP_ITERATIONS = value;
 });
 
-bindRange("bench-iters", input => {
+bindRange("bench-iters", (input) => {
   const value = parseInt(input, 10);
   BENCH_ITERATIONS = value;
 });
@@ -27,7 +29,7 @@ bindRange("bench-iters", input => {
 const whichMap = document.getElementById("input-map");
 const multiplyBy = document.getElementById("multiply-size-by");
 
-var testSourceMap = SCALA_JS_RUNTIME_SOURCE_MAP;
+let testSourceMap = SCALA_JS_RUNTIME_SOURCE_MAP;
 
 const updateTestSourceMap = () => {
   const origMap = window[whichMap.value];
@@ -43,23 +45,27 @@ const updateTestSourceMap = () => {
   testSourceMap.mappings = mappings.join(";");
 
   for (let i = 0; i < factor; i++) {
-    testSourceMap.sources.splice(testSourceMap.sources.length, 0, ...origMap.sources);
+    testSourceMap.sources.splice(
+      testSourceMap.sources.length,
+      0,
+      ...origMap.sources
+    );
     testSourceMap.names.splice(testSourceMap.names.length, 0, ...origMap.names);
   }
 };
 updateTestSourceMap();
 
-whichMap.addEventListener("input", e => {
+whichMap.addEventListener("input", (e) => {
   e.preventDefault();
   updateTestSourceMap();
 });
 
-multiplyBy.addEventListener("input", e => {
+multiplyBy.addEventListener("input", (e) => {
   e.preventDefault();
   updateTestSourceMap();
 });
 
-var implAndBrowser = "<unknown>";
+let implAndBrowser = "<unknown>";
 
 const implAndBrowserInput = document.getElementById("impl-and-browser");
 const updateImplAndBrowser = () => {
@@ -77,16 +83,19 @@ function benchOnClick(button, results, benchName, bencher) {
       e.preventDefault();
 
       const buttons = [...document.querySelectorAll("button")];
-      buttons.forEach(b => b.setAttribute("disabled", true));
+      buttons.forEach((b) => b.setAttribute("disabled", true));
       results.innerHTML = "";
-      await new Promise(r => requestAnimationFrame(r));
+      await new Promise((r) => requestAnimationFrame(r));
 
-      var stats = await bencher();
+      const stats = await bencher();
 
-      buttons.forEach(b => b.removeAttribute("disabled"));
+      buttons.forEach((b) => b.removeAttribute("disabled"));
 
       const csv = stats.xs
-        .map(x => `"${implAndBrowser}",${testSourceMap.mappings.length},"${benchName}",${x}`)
+        .map(
+          (x) =>
+            `"${implAndBrowser}",${testSourceMap.mappings.length},"${benchName}",${x}`
+        )
         .join("\n");
 
       results.innerHTML = `
@@ -115,7 +124,7 @@ function benchOnClick(button, results, benchName, bencher) {
   );
 }
 
-for (let bench of Object.keys(benchmarks)) {
+for (const bench of Object.keys(benchmarks)) {
   const hr = document.createElement("hr");
   document.body.appendChild(hr);
 

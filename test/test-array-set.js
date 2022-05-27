@@ -42,7 +42,7 @@ exports["test creating from an array"] = function(assert) {
     "bar",
     "baz",
     "quux",
-    "hasOwnProperty"
+    "hasOwnProperty",
   ]);
 
   assert.ok(set.has("foo"));

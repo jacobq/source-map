@@ -53,12 +53,12 @@ run(
   requires.map(require).map(function(mod, i) {
     return {
       name: requires[i],
-      testCase: mod
+      testCase: mod,
     };
   })
 ).then(
-  code => process.exit(code),
-  e => {
+  (code) => process.exit(code),
+  (e) => {
     console.error(e);
     process.exit(1);
   }

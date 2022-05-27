@@ -12,8 +12,8 @@ if (!console.profile) {
 
 // Ensure that benchmarks don't get optimized away by calling this blackbox
 // function in your benchmark's action.
-var __benchmarkResults = [];
-var benchmarkBlackbox = [].push.bind(__benchmarkResults);
+let __benchmarkResults = [];
+const benchmarkBlackbox = [].push.bind(__benchmarkResults);
 
 const now =
   typeof window === "object" && window.performance && window.performance.now
@@ -21,7 +21,9 @@ const now =
     : () => now();
 
 const yieldForTick =
-  typeof setTimeout === "function" ? () => new Promise(resolve => setTimeout(resolve, 1)) : () => Promise.resolve();
+  typeof setTimeout === "function"
+    ? () => new Promise((resolve) => setTimeout(resolve, 1))
+    : () => Promise.resolve();
 
 // Benchmark running an action n times.
 async function benchmark(setup, action, tearDown = () => {}) {
@@ -56,22 +58,26 @@ async function benchmark(setup, action, tearDown = () => {}) {
 }
 
 async function getTestMapping() {
-  let smc = await new sourceMap.SourceMapConsumer(testSourceMap);
+  const smc = await new sourceMap.SourceMapConsumer(testSourceMap);
 
-  let mappings = [];
-  smc.eachMapping([].push, mappings, sourceMap.SourceMapConsumer.ORIGINAL_ORDER);
+  const mappings = [];
+  smc.eachMapping(
+    [].push,
+    mappings,
+    sourceMap.SourceMapConsumer.ORIGINAL_ORDER
+  );
 
-  let testMapping = mappings[Math.floor(mappings.length / 13)];
+  const testMapping = mappings[Math.floor(mappings.length / 13)];
   smc.destroy();
   return testMapping;
 }
 
-var benchmarks = {
+const benchmarks = {
   "SourceMapGenerator#toString": () => {
     let smg;
     return benchmark(
-      async function() {
-        var smc = await new sourceMap.SourceMapConsumer(testSourceMap);
+      async function () {
+        const smc = await new sourceMap.SourceMapConsumer(testSourceMap);
         smg = sourceMap.SourceMapGenerator.fromSourceMap(smc);
         smc.destroy();
       },
@@ -84,16 +90,16 @@ var benchmarks = {
   "set.first.breakpoint": () => {
     let testMapping;
     return benchmark(
-      async function() {
+      async function () {
         testMapping = await getTestMapping();
       },
-      async function() {
-        let smc = await new sourceMap.SourceMapConsumer(testSourceMap);
+      async function () {
+        const smc = await new sourceMap.SourceMapConsumer(testSourceMap);
 
         benchmarkBlackbox(
           smc.allGeneratedPositionsFor({
             source: testMapping.source,
-            line: testMapping.originalLine
+            line: testMapping.originalLine,
           }).length
         );
 
@@ -105,16 +111,16 @@ var benchmarks = {
   "first.pause.at.exception": () => {
     let testMapping;
     return benchmark(
-      async function() {
+      async function () {
         testMapping = await getTestMapping();
       },
-      async function() {
-        let smc = await new sourceMap.SourceMapConsumer(testSourceMap);
+      async function () {
+        const smc = await new sourceMap.SourceMapConsumer(testSourceMap);
 
         benchmarkBlackbox(
           smc.originalPositionFor({
             line: testMapping.generatedLine,
-            column: testMapping.generatedColumn
+            column: testMapping.generatedColumn,
           })
         );
 
@@ -127,19 +133,19 @@ var benchmarks = {
     let testMapping;
     let smc;
     return benchmark(
-      async function() {
+      async function () {
         testMapping = await getTestMapping();
         smc = await new sourceMap.SourceMapConsumer(testSourceMap);
       },
-      async function() {
+      async function () {
         benchmarkBlackbox(
           smc.allGeneratedPositionsFor({
             source: testMapping.source,
-            line: testMapping.originalLine
+            line: testMapping.originalLine,
           })
         );
       },
-      function() {
+      function () {
         smc.destroy();
       }
     );
@@ -149,31 +155,31 @@ var benchmarks = {
     let testMapping;
     let smc;
     return benchmark(
-      async function() {
+      async function () {
         testMapping = await getTestMapping();
         smc = await new sourceMap.SourceMapConsumer(testSourceMap);
       },
-      async function() {
+      async function () {
         benchmarkBlackbox(
           smc.originalPositionFor({
             line: testMapping.generatedLine,
-            column: testMapping.generatedColumn
+            column: testMapping.generatedColumn,
           })
         );
       },
-      function() {
+      function () {
         smc.destroy();
       }
     );
   },
 
   "parse.and.iterate": () => {
-    return benchmark(noop, async function() {
+    return benchmark(noop, async function () {
       const smc = await new sourceMap.SourceMapConsumer(testSourceMap);
 
       let maxLine = 0;
       let maxCol = 0;
-      smc.eachMapping(m => {
+      smc.eachMapping((m) => {
         maxLine = Math.max(maxLine, m.generatedLine);
         maxLine = Math.max(maxLine, m.originalLine);
         maxCol = Math.max(maxCol, m.generatedColumn);
@@ -189,13 +195,13 @@ var benchmarks = {
   "iterate.already.parsed": () => {
     let smc;
     return benchmark(
-      async function() {
+      async function () {
         smc = await new sourceMap.SourceMapConsumer(testSourceMap);
       },
-      async function() {
+      async function () {
         let maxLine = 0;
         let maxCol = 0;
-        smc.eachMapping(m => {
+        smc.eachMapping((m) => {
           maxLine = Math.max(maxLine, m.generatedLine);
           maxLine = Math.max(maxLine, m.originalLine);
           maxCol = Math.max(maxCol, m.generatedColumn);
@@ -204,9 +210,9 @@ var benchmarks = {
         benchmarkBlackbox(maxLine);
         benchmarkBlackbox(maxCol);
       },
-      function() {
+      function () {
         smc.destroy();
       }
     );
-  }
+  },
 };

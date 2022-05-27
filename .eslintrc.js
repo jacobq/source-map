@@ -3,19 +3,19 @@
 module.exports = {
   env: {
     node: true,
-    es6: true
+    es6: true,
   },
 
   plugins: ["prettier"],
   extends: ["prettier"],
 
   parserOptions: {
-    ecmaVersion: 2018
+    ecmaVersion: 2022,
   },
 
   globals: {
     fetch: false,
-    WebAssembly: false
+    WebAssembly: false,
   },
 
   rules: {
@@ -71,8 +71,8 @@ module.exports = {
       {
         afterColon: true,
         beforeColon: false,
-        mode: "minimum"
-      }
+        mode: "minimum",
+      },
     ],
 
     // Require spaces before and after keywords
@@ -189,9 +189,9 @@ module.exports = {
           ArrayExpression: true,
           AssignmentExpression: true,
           ObjectExpression: true,
-          VariableDeclarator: true
-        }
-      }
+          VariableDeclarator: true,
+        },
+      },
     ],
 
     // No reassigning native JS objects
@@ -265,8 +265,8 @@ module.exports = {
       "error",
       {
         args: "none",
-        vars: "local"
-      }
+        vars: "local",
+      },
     ],
 
     // No using variables before defined
@@ -304,8 +304,8 @@ module.exports = {
       "double",
       {
         allowTemplateLiterals: true,
-        avoidEscape: true
-      }
+        avoidEscape: true,
+      },
     ],
 
     // No spacing inside rest or spread expressions
@@ -323,8 +323,8 @@ module.exports = {
       {
         anonymous: "never",
         asyncArrow: "always",
-        named: "never"
-      }
+        named: "never",
+      },
     ],
 
     // No space padding in parentheses
@@ -339,10 +339,10 @@ module.exports = {
       {
         nonwords: false,
         overrides: {
-          typeof: false // We tend to use typeof as a function call
+          typeof: false, // We tend to use typeof as a function call
         },
-        words: true
-      }
+        words: true,
+      },
     ],
 
     // Requires or disallows a whitespace (space or tab) beginning a comment
@@ -355,6 +355,6 @@ module.exports = {
     "valid-typeof": "error",
 
     "prettier/prettier": "error",
-    "max-len": ["error", { code: 120, ignoreUrls: true }]
-  }
+    "max-len": ["error", { code: 120, ignoreUrls: true }],
+  },
 };
