@@ -60,7 +60,7 @@
     "tag": "next"
   },
   "engines": {
-    "node": "16.* || >= 18"
+    "node": "10.* || 12.* || 14.* || 16.* || >= 18"
   },
   "license": "BSD-3-Clause",
   "scripts": {
